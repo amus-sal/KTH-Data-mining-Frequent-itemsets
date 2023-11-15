@@ -8,3 +8,6 @@ if __name__ == "__main__":
            ['Tea Leaves','Onion','Kidney Beans', 'Ice cream', 'Eggs'],]
     utils.getAprioriAlg(dataset,.3)
      
+
+
+
