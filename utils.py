@@ -7,7 +7,9 @@ def getUnion(itemSet, length):
 def getAprioriAlg(itemSetList, minSup):
     C1List = getItemSetFromList(itemSetList) ## frequest 1 itemlist
     # print(C1List)
-    globalFreqItemSet = dict() 
+    globalFreqItemSet = dict()# The ` ` is used to create an empty set in Python. In the code, it is
+    # used to initialize an empty set called `tempItemSet`.
+     
     globalItemSetWithSup = defaultdict(int) ## total counts of each item "count of existance"
     L1ItemSet = getMinSup(C1List,itemSetList,minSup,globalItemSetWithSup) ## return first level of freq item set
     # print(globalItemSetWithSup)
@@ -84,5 +86,4 @@ def getMinSup(itemSet, itemSetList, minSup, globalItemSetWithSup):
             freqItemSet.add(item)
 
     return freqItemSet
-
 
