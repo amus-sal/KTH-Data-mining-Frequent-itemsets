@@ -21,8 +21,10 @@ def getAprioriAlg(itemSetList, minSup):
         k = k +1
 
     rules = associationRule(globalFreqItemSet, globalItemSetWithSup, .7)  ## .3 is the min acceptable confidence.
-    rules.sort(key=lambda x: x[2]) ## sort by confidence 
-    print(rules)
+    rules.sort(key=lambda x: x[2], reverse=True) ## sort by confidence
+    print("Association rules (greater to smaller)")
+    for r in rules:
+        print(f"{r}")
     return globalFreqItemSet, rules
 
 def pruning(candidateSet, prevFreqSet, length):
