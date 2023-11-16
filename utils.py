@@ -16,6 +16,7 @@ def getAprioriAlg(itemSetList, minSup):
     while currentLSet:
         globalFreqItemSet[k-1] = currentLSet ## for k = 1 "size of set is 1"
         candidateSet = getUnion(currentLSet, k) ## create  itemsets for size k  from the current list
+        candidateSet = pruning(candidateSet, currentLSet, k-1)
         currentLSet = getMinSup(candidateSet,itemSetList,minSup,globalItemSetWithSup) ## return only sets above min support
         k = k +1
 
@@ -23,9 +24,24 @@ def getAprioriAlg(itemSetList, minSup):
     rules.sort(key=lambda x: x[2]) ## sort by confidence 
     print(rules)
     return globalFreqItemSet, rules
-    
+
+def pruning(candidateSet, prevFreqSet, length):
+    print("=--------------------" )
+    print("start pruning : ",candidateSet )
+    tempCandidateSet = candidateSet.copy()
+    for item in candidateSet:
+        subsets = combinations(item, length)
+        for subset in subsets:
+            # if the subset is not in previous K-frequent get, then remove the set
+            if(frozenset(subset) not in prevFreqSet):
+                tempCandidateSet.remove(item)
+                break
+
+    print("after pruning : ",candidateSet )
+    return tempCandidateSet   
+
 def powerset(s):
-    return chain.from_iterable(combinations(s, r) for r in range(1, len(s))) ## generate all possible combinations ex[1,2,3] output [1,2,3,{1,2},{2,3},{1,3}]
+    return chain.from_iterable(combinations(s, r) for r in range(1, len(s))) ## generate all possible combinations ex[1]
 
 def associationRule(freqItemSet, itemSetWithSup, minConf):
     rules = []
@@ -48,10 +64,6 @@ def getItemSetFromList(itemSetList):
             tempItemSet.add(frozenset([item]))
 
     return tempItemSet
-
-
-
-
 
 def getMinSup(itemSet, itemSetList, minSup, globalItemSetWithSup):
     freqItemSet = set()
