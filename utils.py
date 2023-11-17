@@ -30,8 +30,6 @@ def getAprioriAlg(itemSetList, minSup):
     return globalFreqItemSet, rules
 
 def pruning(candidateSet, prevFreqSet, length):
-    print("=--------------------" )
-    print("start pruning : ",candidateSet )
     tempCandidateSet = candidateSet.copy()
     for item in candidateSet:
         subsets = combinations(item, length)
@@ -40,20 +38,19 @@ def pruning(candidateSet, prevFreqSet, length):
             if(frozenset(subset) not in prevFreqSet):
                 tempCandidateSet.remove(item)
                 break
-
-    print("after pruning : ",candidateSet )
     return tempCandidateSet   
 
-def powerset(s):
-    return chain.from_iterable(combinations(s, r) for r in range(1, len(s))) ## generate all possible combinations ex[1]
+def getPossibleSets(s):
+    result = []
+    for r in range(1, len(s)):
+        result.extend(combinations(s, r))
+    return result
 
 def associationRule(freqItemSet, itemSetWithSup, minConf):
     rules = []
     for k, itemSet in freqItemSet.items():
         for item in itemSet:
-            # print("---------")
-            # print(item)
-            subsets = powerset(item)
+            subsets = getPossibleSets(item)
             for s in subsets:
                 confidence = float(
                     itemSetWithSup[item] / itemSetWithSup[frozenset(s)])
